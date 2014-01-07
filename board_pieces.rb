@@ -115,7 +115,7 @@ class Pawn < Piece
       dx, dy = delta[0], delta[1]
 
       pos = [cur_x + dx, cur_y + dy]
-      break if out_of_bounds?(pos) ||
+      next if out_of_bounds?(pos)
 
       position_array << pos if !@board[pos].nil? && @board[pos].color != @color
     end

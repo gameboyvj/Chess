@@ -84,6 +84,32 @@ class Board
     self
   end
 
+  def move (start, stop)
+    # begin
+      piece = self[start]
+      raise NoMethodError.new "Invalid start " if piece.nil?
+      if piece.moves.include?(stop)
+        piece.position = stop
+        if self[stop].is_a? Piece
+          update_catalog(self[stop])
+        end
+        self[stop] = piece
+        self[start] = nil
+        piece.first_move = false if piece.type == :pawn
+      else
+        raise ArgumentError.new
+      end
+    # rescue NoMethodError => e
+#       puts "Invalid move"
+#     rescue ArgumentError => f
+#       puts "Piece cannot move there"
+#     end
+
+  end
+
+  def update_catalog(dead_piece)
+    @piece_catalog.delete(dead_piece)
+  end
 
 end
 
