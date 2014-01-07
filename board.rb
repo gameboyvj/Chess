@@ -17,4 +17,17 @@ class Board
     @board[y][x] = value
   end
 
+  def render
+    @board.each do |row|
+      row.each do |value|
+        if value.nil?
+          print "_ "
+        else
+          print "P "
+        end
+      end
+      puts
+    end
+  end
+
 end
