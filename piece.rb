@@ -1,15 +1,16 @@
 require "./board.rb"
 require "./board_pieces.rb"
+require "debugger"
 
 class Piece
-  attr_accessor :position
+  attr_accessor :position, :first_move
   attr_reader :color
 
   def initialize(position, board, color)
-    @position = position # [x,y]
+    @position = position
     @board = board
     @color = color
-    @board[position]=self
+    #@board[position]=self
     @first_move = true
   end
 
@@ -25,11 +26,10 @@ class Piece
   end
 
   def valid_moves
-
     #take the piece's moves,
     #executes each one on a duped board, checks board.in_check?
     valid_moves = []
-
+    debugger
     possible_moves = self.moves
     possible_moves.each do |move|
       duped_board = @board.dup
@@ -42,6 +42,9 @@ class Piece
     valid_moves
   end
 
+  def dup
+    duped_piece = self.class.new(@position.dup, @board, @color)
+  end
 
 end
 

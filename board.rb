@@ -69,10 +69,16 @@ class Board
 
   def dup
     duped_board = Board.new
-
-    duped_board.each_pos! {|pos| pos = pos.dup unless pos.nil? }
+    (0..7).each do |y|
+      (0..7).each do |x|
+        if self[[x,y]].nil?
+          duped_board[[x,y]] = nil
+        else
+          duped_board[[x,y]] = self[[x,y]].dup
+        end
+      end
+    end
     duped_board
-
   end
 
 =begin
@@ -115,8 +121,26 @@ class Board
     @piece_catalog.delete(dead_piece)
   end
 
+  def checkmate?(color)
+    checkmate = true
+
+    if in_check?(color)
+      @piece_catalog.each do |piece|
+        if piece.color == color && piece.valid_moves.length > 0
+          checkmate = false
+        end
+      end
+
+    else
+      checkmate = false
+    end
+
+    checkmate
+  end
 
 end
+
+
 
 =begin
 b = Board.new
