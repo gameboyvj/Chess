@@ -4,8 +4,11 @@ require "debugger"
 
 class Board
 
+  attr_reader :piece_catalog
+
   def initialize
     @board = Array.new(8) { Array.new(8) { nil } }
+    @piece_catalog = []
     setup
   end
 
@@ -39,25 +42,39 @@ class Board
     (0..7).each do |num|
       [:white, :black].each do |color|
         color == :white ? pos = [num,7] : pos = [num, 0]
-        self[pos]= pieces[num].new(pos, self, color)
+        new_piece = pieces[num].new(pos, self, color)
+        self[pos] = new_piece
+        @piece_catalog << new_piece
       end
     end
 
     (0..7).each do |num|
       [:white, :black].each do |color|
         color == :white ? pos = [num,6] : pos = [num, 1]
-        self[pos]= Pawn.new(pos, self, color)
+        new_piece = Pawn.new(pos, self, color)
+        self[pos] = new_piece
+        @piece_catalog << new_piece
       end
     end
     nil
   end
 
-  def in_check
-
-
+  def in_check?(color)
+    king = @piece_catalog.select {|piece| piece.type == :king && piece.color == color}
+    @piece_catalog.each do |piece|
+      return true if piece.color != color && piece.moves.include?(king[0].position)
+    end
+    false
   end
-
-
+=begin
+  b=Board.new
+  q=Queen.new([5,5], b, :white)
+  k=King.new([5,6], b, :black)
+  b.piece_catalog << q
+  b.piece_catalog << k
+  b.render
+  b.in_check?(:black)
+=end
   def each_pos(&blk)
     (0..7).each do |y|
       (0..7).each do |x|
