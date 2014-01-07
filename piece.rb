@@ -1,5 +1,5 @@
 require "./board.rb"
-require "debugger"
+require "./board_pieces.rb"
 
 class Piece
   attr_accessor :position
