@@ -1,3 +1,5 @@
+require "./piece.rb"
+
 class Board
 
   def initialize
@@ -5,11 +7,13 @@ class Board
   end
 
 
-  def [](x,y)
+  def [](pos)
+    x,y = pos
     @board[y][x]
   end
 
-  def []=(x,y,value)
+  def []=(pos,value)
+    x,y = pos
     @board[y][x] = value
   end
 
