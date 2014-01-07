@@ -66,6 +66,15 @@ class Board
     end
     false
   end
+
+  def dup
+    duped_board = Board.new
+
+    duped_board.each_pos! {|pos| pos = pos.dup unless pos.nil? }
+    duped_board
+
+  end
+
 =begin
   b=Board.new
   q=Queen.new([5,5], b, :white)
@@ -75,41 +84,37 @@ class Board
   b.render
   b.in_check?(:black)
 =end
-  def each_pos(&blk)
+  def each_pos!(&blk)
     (0..7).each do |y|
       (0..7).each do |x|
-       blk.call(self[[x,y]])
+       self[[x,y]] = blk.call(self[[x,y]])
       end
     end
     self
   end
 
   def move (start, stop)
-    # begin
-      piece = self[start]
-      raise NoMethodError.new "Invalid start " if piece.nil?
-      if piece.moves.include?(stop)
-        piece.position = stop
-        if self[stop].is_a? Piece
-          update_catalog(self[stop])
-        end
-        self[stop] = piece
-        self[start] = nil
-        piece.first_move = false if piece.type == :pawn
-      else
-        raise ArgumentError.new
+    piece = self[start]
+    raise NoMethodError.new "Invalid start!" if piece.nil?
+    if piece.moves.include?(stop)
+      piece.position = stop
+      if self[stop].is_a? Piece
+        update_catalog(self[stop])
       end
-    # rescue NoMethodError => e
-#       puts "Invalid move"
-#     rescue ArgumentError => f
-#       puts "Piece cannot move there"
-#     end
+      self[stop] = piece
+      self[start] = nil
+      piece.first_move = false
+    else
+      raise ArgumentError.new "Piece cannot move there!"
+    end
 
+    nil
   end
 
   def update_catalog(dead_piece)
     @piece_catalog.delete(dead_piece)
   end
+
 
 end
 

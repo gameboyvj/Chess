@@ -10,6 +10,7 @@ class Piece
     @board = board
     @color = color
     @board[position]=self
+    @first_move = true
   end
 
   def moves
@@ -21,6 +22,24 @@ class Piece
     x,y = pos
     return false if x.between?(0, 7) && y.between?(0,7)
     true
+  end
+
+  def valid_moves
+
+    #take the piece's moves,
+    #executes each one on a duped board, checks board.in_check?
+    valid_moves = []
+
+    possible_moves = self.moves
+    possible_moves.each do |move|
+      duped_board = @board.dup
+      duped_board.move(self.position, move)
+      unless duped_board.in_check?(self.color)
+        valid_moves << move
+      end
+    end
+
+    valid_moves
   end
 
 

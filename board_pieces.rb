@@ -88,7 +88,6 @@ class Pawn < Piece
   def initialize(position, board, color)
     super(position, board, color)
     @type = :pawn
-    @first_move = true
   end
 
   def moves
