@@ -16,6 +16,13 @@ class Piece
 
   end
 
+  def out_of_bounds?(pos)
+    x,y = pos
+    return false if x.between?(0, 7) && y.between?(0,7)
+    true
+  end
+
+
 end
 
 class SlidingPiece < Piece
@@ -51,25 +58,47 @@ class SlidingPiece < Piece
     [[1,1], [1,-1], [-1, 1], [-1,-1], [1,0], [-1, 0], [0, 1], [0, -1]]
   end
 
-  def out_of_bounds?(pos)
-    x,y = pos
-    return false if x.between?(0, 7) && y.between?(0,7)
-    true
-  end
-
 end
 
 =begin
 b=Board.new
-p=SlidingPiece.new([5,5], b, :white)
+p=SteppingPiece.new([5,5], b, :white)
 b[[5,5]]=p
 
-p2=SlidingPiece.new([3,5], b, :white)
+p2=SteppingPiece.new([3,5], b, :white)
 b[[3,5]]=p2
 =end
 
-class SteppingPiece
+
+class SteppingPiece < Piece
+
+  def move_dirs
+    [[1,1], [1,-1], [-1, 1], [-1,-1], [1,0], [-1, 0], [0, 1], [0, -1]]
+  end
+
+  def moves
+    deltas = move_dirs
+    position_array = []
+
+    deltas.each do |delta|
+      cur_x, cur_y = @position
+      dx, dy = delta[0], delta[1]
 
 
+      pos = [cur_x + dx, cur_y + dy]
+      break if out_of_bounds?(pos)
+
+      if @board[pos].nil?
+        position_array << pos
+      elsif @board[pos].color != @color
+        position_array << pos
+        break
+      else
+        break
+      end
+
+    end
+    position_array
+  end
 
 end
