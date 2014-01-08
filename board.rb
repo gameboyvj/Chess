@@ -1,7 +1,3 @@
-require "./piece.rb"
-require "./board_pieces.rb"
-require "debugger"
-
 class Board
 
   attr_accessor :piece_catalog
@@ -90,15 +86,6 @@ class Board
     duped_board
   end
 
-=begin
-  b=Board.new
-  q=Queen.new([5,5], b, :white)
-  k=King.new([5,6], b, :black)
-  b.piece_catalog << q
-  b.piece_catalog << k
-  b.render
-  b.in_check?(:black)
-=end
   def each_pos!(&blk)
     (0..7).each do |y|
       (0..7).each do |x|
@@ -153,16 +140,3 @@ class Board
   end
 
 end
-
-
-
-=begin
-b = Board.new
-
-q = Queen.new([3,0], b, :black)
-k = King.new([4,0],b, :black)
-p = Pawn.new([4,1], b, :black)
-p2 = Pawn.new([5,2], b, :white)
-
-=end
-

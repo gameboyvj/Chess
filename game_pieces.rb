@@ -1,6 +1,3 @@
-load "./piece.rb"
-# require "./board.rb"
-
 class Rook < SlidingPiece
   attr_reader :type
 
