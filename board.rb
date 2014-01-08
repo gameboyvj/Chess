@@ -60,11 +60,11 @@ class Board
 
   def move (start, stop)
     piece = self[start]
-    raise NoMethodError if piece.nil?
+    raise NilPieceError if piece.nil?
     if piece.valid_moves.include?(stop)
       make_move(start, stop)
     else
-      raise ArgumentError
+      raise InvalidMoveError
     end
 
     nil
