@@ -37,7 +37,7 @@ class Piece
   end
 
   def dup(dup_board)
-    duped_piece = self.class.new(@position.dup, dup_board, @color)
+    self.class.new(@position.dup, dup_board, @color)
   end
 
 end

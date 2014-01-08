@@ -22,7 +22,7 @@ class Chess
     turn = :white
     until @board.checkmate?(turn)
       @board.render
-
+      puts "You are in check" if @board.in_check?(turn)
       begin
         start, stop = @players[turn].play_turn
 

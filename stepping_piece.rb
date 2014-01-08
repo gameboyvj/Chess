@@ -14,7 +14,7 @@ class SteppingPiece < Piece
 
 
       pos = [cur_x + dx, cur_y + dy]
-      break if out_of_bounds?(pos)
+      next if out_of_bounds?(pos)
 
       if @board[pos].nil?
         position_array << pos

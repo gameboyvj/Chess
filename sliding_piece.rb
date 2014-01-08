@@ -8,8 +8,7 @@ class SlidingPiece < Piece
       cur_x, cur_y = @position
       dx, dy = delta[0], delta[1]
 
-      n = 1
-      loop do
+      (1..7).each do |n|
         pos = [cur_x + n*dx, cur_y + n*dy]
         break if out_of_bounds?(pos)
 
@@ -21,7 +20,7 @@ class SlidingPiece < Piece
         else
           break
         end
-        n += 1
+        
       end
     end
     position_array
