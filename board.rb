@@ -23,14 +23,17 @@ class Board
   end
 
   def render
-    puts "  #{("a".."h").to_a.join(" ")}"
+    puts "   #{("a".."h").to_a.join("  ")}"
+
     @board.each_with_index do |row, index|
       print "#{8-index} "
+      index%2 == 0 ? color = :light_white : color = :light_black
       row.each do |value|
+        color == :light_white ? color = :light_black : color = :light_white
         if value.nil?
-          print "_ "
+          print "   ".colorize(:background => color)
         else
-          print value.to_s+" "
+          print " #{value.to_s} ".colorize(:background => color)
         end
       end
       puts

@@ -3,6 +3,7 @@ require "./board_pieces.rb"
 require "./piece.rb"
 
 class Chess
+  attr_reader :board
 
   def initialize(name1, name2)
     @board = Board.new
@@ -16,12 +17,22 @@ class Chess
     until @board.checkmate?(turn)
       @board.render
 
-
-      @players[turn].play_turn
-
+      begin
+        start, stop = @players[turn].play_turn
+        @board.move(start, stop)
+      rescue NoMethodError => e
+        puts "Invalid start position"
+        retry
+      rescue ArgumentError => f
+        puts "Invalid stop position"
+        retry
+      end
 
       turn == :white ? turn = :black : turn = :white
     end
+
+    puts "Game over! #{@players[turn].name} lost."
+    @board.render
 
   end
 end
@@ -35,11 +46,9 @@ class HumanPlayer
   end
 
   def play_turn
-    puts "Enter a move (eg 'a2, a4')"
+    puts "#{name}, enter a move (eg 'a2, a4')"
     move_str = gets.chomp
     coords = convert_to_coords(move_str)
-
-
   end
 
   def convert_to_coords(move_str)
