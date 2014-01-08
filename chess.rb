@@ -1,3 +1,5 @@
+#!/Users/appacademy/.rvm/rubies/ruby-1.9.3-p392/bin/ruby
+
 require "./board.rb"
 require "./piece.rb"
 require "./sliding_piece.rb"
@@ -19,7 +21,6 @@ class Chess
     turn = :white
     until @board.checkmate?(turn)
       @board.render
-
       begin
         start, stop = @players[turn].play_turn
 
@@ -39,7 +40,7 @@ class Chess
       turn == :white ? turn = :black : turn = :white
     end
 
-    puts "Game over! #{@players[turn].name} lost."
+    puts "Game over! #{@players[turn].name} is in checkmate."
     @board.render
   end
 end

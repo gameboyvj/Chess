@@ -46,8 +46,6 @@ class Queen < SlidingPiece
   end
 end
 
-
-
 class King < SteppingPiece
   attr_reader :type
 
@@ -97,7 +95,7 @@ class Pawn < Piece
       dx, dy = delta[0], delta[1]
 
       pos = [cur_x + dx, cur_y + dy]
-      break if out_of_bounds?(pos)
+      next if out_of_bounds?(pos)
 
       if @board[pos].nil?
         position_array << pos
@@ -113,7 +111,7 @@ class Pawn < Piece
       pos = [cur_x + dx, cur_y + dy]
       next if out_of_bounds?(pos)
 
-      position_array << pos if !@board[pos].nil? && @board[pos].color != @color
+      position_array << pos if @board[pos] && @board[pos].color != @color
     end
 
     position_array

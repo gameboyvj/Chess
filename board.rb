@@ -59,11 +59,11 @@ class Board
 
   def move (start, stop)
     piece = self[start]
-    raise NoMethodError.new "Invalid start!" if piece.nil?
+    raise NoMethodError if piece.nil?
     if piece.valid_moves.include?(stop)
       make_move(start, stop)
     else
-      raise ArgumentError.new "Piece cannot move there!"
+      raise ArgumentError
     end
 
     nil
@@ -106,20 +106,6 @@ class Board
     duped_board
   end
 
-  def each_pos!(&blk)
-    (0..7).each do |y|
-      (0..7).each do |x|
-       self[[x,y]] = blk.call(self[[x,y]])
-      end
-    end
-    self
-  end
-
-
-  def rem_from_catalog(dead_piece)
-    @piece_catalog.delete(dead_piece)
-  end
-
   def checkmate?(color)
     checkmate = true
 
@@ -129,7 +115,6 @@ class Board
           checkmate = false
         end
       end
-
     else
       checkmate = false
     end
@@ -137,4 +122,8 @@ class Board
     checkmate
   end
 
+  private
+  def rem_from_catalog(dead_piece)
+    @piece_catalog.delete(dead_piece)
+  end
 end
