@@ -23,7 +23,9 @@ class Board
   end
 
   def render
-    @board.each do |row|
+    puts "  #{("a".."h").to_a.join(" ")}"
+    @board.each_with_index do |row, index|
+      print "#{8-index} "
       row.each do |value|
         if value.nil?
           print "_ "
