@@ -11,7 +11,7 @@ require "colorize"
 class Chess
   attr_reader :board, :players
 
-  def initialize(name1, name2)
+  def initialize(name1 = "Player 1", name2 = "Player 2")
     @board = Board.new
     @players = {:white => HumanPlayer.new(name1, :white),
                 :black => HumanPlayer.new(name2, :black)}

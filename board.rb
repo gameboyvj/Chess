@@ -34,6 +34,7 @@ class Board
       end
       puts
     end
+    puts "   #{("a".."h").to_a.join("  ")}\n\n"
 
     nil
   end

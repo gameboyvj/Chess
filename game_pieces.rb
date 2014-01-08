@@ -85,11 +85,25 @@ class Pawn < Piece
     @type = :pawn
   end
 
+  def to_s
+    @color == :white ? "\u2659".encode : "\u265F".encode
+  end
+
   def moves
     deltas = move_dirs
     diag_deltas = deltas.pop(2)
 
+    position_array = get_forward_moves(deltas)
+    position_array += get_diag_moves(diag_deltas)
+
+    position_array
+  end
+
+  private
+
+  def get_forward_moves(deltas)
     position_array = []
+
     deltas.each do |delta|
       cur_x, cur_y = @position
       dx, dy = delta[0], delta[1]
@@ -103,6 +117,11 @@ class Pawn < Piece
         break
       end
     end
+    position_array
+  end
+
+  def get_diag_moves(diag_deltas)
+    position_array = []
 
     diag_deltas.each do |delta|
       cur_x, cur_y = @position
@@ -129,7 +148,4 @@ class Pawn < Piece
     end
   end
 
-  def to_s
-    @color == :white ? "\u2659".encode : "\u265F".encode
-  end
 end
