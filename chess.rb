@@ -7,6 +7,7 @@ require "./stepping_piece.rb"
 require "./game_pieces.rb"
 require "./human_player.rb"
 require "colorize"
+require "./errors.rb"
 
 class Chess
   attr_reader :board, :players
@@ -21,18 +22,22 @@ class Chess
     turn = :white
     until @board.checkmate?(turn)
       @board.render
+
       begin
         start, stop = @players[turn].play_turn
 
         if @board[start].color == turn
           @board.move(start, stop)
         else
-          raise NoMethodError
+          raise WrongPieceError
         end
-      rescue NoMethodError => e
+      rescue WrongPieceError
+        puts "Not your piece!"
+        retry
+      rescue NilPieceError => e
         puts "Invalid start position"
         retry
-      rescue ArgumentError => f
+      rescue InvalidMoveError => f
         puts "Invalid stop position"
         retry
       end
@@ -40,13 +45,23 @@ class Chess
       turn == :white ? turn = :black : turn = :white
     end
 
+    end_condition(turn)
+  end
+
+  private
+  def end_condition(turn)
     puts "Game over! #{@players[turn].name} is in checkmate."
     @board.render
   end
+
 end
 
 
 if __FILE__ == $PROGRAM_NAME
-  c = Chess.new(ARGV.shift, ARGV.shift)
+  unless ARGV.empty?
+    c = Chess.new(ARGV.shift, ARGV.shift)
+  else
+    c = Chess.new
+  end
   c.play
 end

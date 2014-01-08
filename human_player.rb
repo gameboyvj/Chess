@@ -13,7 +13,8 @@ class HumanPlayer
   end
 
   def convert_to_coords(move_str)
-    start_str, stop_str = move_str.split(", ")
+    move_str.gsub!(" ","")
+    start_str, stop_str = move_str.split(",")
     start_x = start_str[0].ord - 97
     start_y = 8 - start_str[1].to_i
     stop_x = stop_str[0].ord - 97
