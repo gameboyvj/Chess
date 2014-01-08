@@ -29,11 +29,11 @@ class Piece
     #take the piece's moves,
     #executes each one on a duped board, checks board.in_check?
     valid_moves = []
-    debugger
+    #debugger
     possible_moves = self.moves
     possible_moves.each do |move|
       duped_board = @board.dup
-      duped_board.move(self.position, move)
+      duped_board.make_move(self.position, move)
       unless duped_board.in_check?(self.color)
         valid_moves << move
       end
@@ -42,12 +42,19 @@ class Piece
     valid_moves
   end
 
-  def dup
-    duped_piece = self.class.new(@position.dup, @board, @color)
+  def dup(dup_board)
+    duped_piece = self.class.new(@position.dup, dup_board, @color)
   end
 
 end
+=begin
+b.move([5,6],[5,5])
+b.move([4,1],[4,3])
+b.move([6,6], [6,4])
+b.move([3,0],[7,4])
 
+
+=end
 class SlidingPiece < Piece
 
   def moves

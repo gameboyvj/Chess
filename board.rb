@@ -4,7 +4,7 @@ require "debugger"
 
 class Board
 
-  attr_reader :piece_catalog
+  attr_accessor :piece_catalog
 
   def initialize
     @board = Array.new(8) { Array.new(8) { nil } }
@@ -74,9 +74,13 @@ class Board
         if self[[x,y]].nil?
           duped_board[[x,y]] = nil
         else
-          duped_board[[x,y]] = self[[x,y]].dup
+          duped_board[[x,y]] = self[[x,y]].dup(duped_board)
         end
       end
+    end
+    duped_board.piece_catalog = []
+    @piece_catalog.each do |piece|
+      duped_board.piece_catalog << piece.dup(duped_board)
     end
     duped_board
   end
@@ -102,14 +106,8 @@ class Board
   def move (start, stop)
     piece = self[start]
     raise NoMethodError.new "Invalid start!" if piece.nil?
-    if piece.moves.include?(stop)
-      piece.position = stop
-      if self[stop].is_a? Piece
-        update_catalog(self[stop])
-      end
-      self[stop] = piece
-      self[start] = nil
-      piece.first_move = false
+    if piece.valid_moves.include?(stop)
+      make_move(start, stop)
     else
       raise ArgumentError.new "Piece cannot move there!"
     end
@@ -117,7 +115,18 @@ class Board
     nil
   end
 
-  def update_catalog(dead_piece)
+  def make_move(start, stop)
+    piece = self[start]
+    piece.position = stop
+    if self[stop].is_a? Piece
+      rem_from_catalog(self[stop])
+    end
+    self[stop] = piece
+    self[start] = nil
+    piece.first_move = false
+  end
+
+  def rem_from_catalog(dead_piece)
     @piece_catalog.delete(dead_piece)
   end
 
