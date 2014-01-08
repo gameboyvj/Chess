@@ -22,7 +22,12 @@ class Chess
 
       begin
         start, stop = @players[turn].play_turn
-        @board.move(start, stop)
+
+        if @board[start].color == turn
+          @board.move(start, stop)
+        else
+          raise NoMethodError
+        end
       rescue NoMethodError => e
         puts "Invalid start position"
         retry

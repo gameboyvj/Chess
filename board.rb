@@ -46,18 +46,38 @@ class Board
         new_piece = pieces[num].new(pos, self, color)
         self[pos] = new_piece
         @piece_catalog << new_piece
-      end
-    end
 
-    (0..7).each do |num|
-      [:white, :black].each do |color|
         color == :white ? pos = [num,6] : pos = [num, 1]
         new_piece = Pawn.new(pos, self, color)
         self[pos] = new_piece
         @piece_catalog << new_piece
       end
     end
+
     nil
+  end
+
+  def move (start, stop)
+    piece = self[start]
+    raise NoMethodError.new "Invalid start!" if piece.nil?
+    if piece.valid_moves.include?(stop)
+      make_move(start, stop)
+    else
+      raise ArgumentError.new "Piece cannot move there!"
+    end
+
+    nil
+  end
+
+  def make_move(start, stop)
+    piece = self[start]
+    piece.position = stop
+    if self[stop].is_a? Piece
+      rem_from_catalog(self[stop])
+    end
+    self[stop] = piece
+    self[start] = nil
+    piece.first_move = false
   end
 
   def in_check?(color)
@@ -95,28 +115,6 @@ class Board
     self
   end
 
-  def move (start, stop)
-    piece = self[start]
-    raise NoMethodError.new "Invalid start!" if piece.nil?
-    if piece.valid_moves.include?(stop)
-      make_move(start, stop)
-    else
-      raise ArgumentError.new "Piece cannot move there!"
-    end
-
-    nil
-  end
-
-  def make_move(start, stop)
-    piece = self[start]
-    piece.position = stop
-    if self[stop].is_a? Piece
-      rem_from_catalog(self[stop])
-    end
-    self[stop] = piece
-    self[start] = nil
-    piece.first_move = false
-  end
 
   def rem_from_catalog(dead_piece)
     @piece_catalog.delete(dead_piece)
