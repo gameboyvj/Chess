@@ -118,8 +118,4 @@ class Board
     checkmate
   end
 
-  # private
-#   def rem_from_catalog(dead_piece)
-#     @piece_catalog.delete(dead_piece)
-#   end
 end
