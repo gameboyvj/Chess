@@ -40,6 +40,9 @@ class Chess
       rescue InvalidMoveError => f
         puts "Invalid stop position"
         retry
+      rescue NoMethodError => g
+        puts "Invalid move"
+        retry
       end
 
       turn == :white ? turn = :black : turn = :white
