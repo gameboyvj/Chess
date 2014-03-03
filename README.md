@@ -7,4 +7,5 @@ The project was written as an exercise in pair programming. It uses inheritance 
 One of the best implemented features is to duplicate the board on the backend to see if the move puts the player in check. The game then alerts you of an invalid move and lets you move again. 
 
 To do
+
 Add actual gui interface
